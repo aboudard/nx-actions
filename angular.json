@@ -1,0 +1,157 @@
+{
+  "version": 1,
+  "projects": {
+    "nx-actions": {
+      "projectType": "application",
+      "root": "apps/nx-actions",
+      "sourceRoot": "apps/nx-actions/src",
+      "prefix": "nx-actions",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/nx-actions",
+            "index": "apps/nx-actions/src/index.html",
+            "main": "apps/nx-actions/src/main.ts",
+            "polyfills": "apps/nx-actions/src/polyfills.ts",
+            "tsConfig": "apps/nx-actions/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "apps/nx-actions/src/favicon.ico",
+              "apps/nx-actions/src/assets"
+            ],
+            "styles": ["apps/nx-actions/src/styles.scss"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "apps/nx-actions/src/environments/environment.ts",
+                  "with": "apps/nx-actions/src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "nx-actions:build:production"
+            },
+            "development": {
+              "browserTarget": "nx-actions:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "nx-actions:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/nx-actions/src/**/*.ts",
+              "apps/nx-actions/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/nx-actions"],
+          "options": {
+            "jestConfig": "apps/nx-actions/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "nx-actions-e2e": {
+      "root": "apps/nx-actions-e2e",
+      "sourceRoot": "apps/nx-actions-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/nx-actions-e2e/cypress.json",
+            "devServerTarget": "nx-actions:serve:development",
+            "tsConfig": "apps/nx-actions-e2e/tsconfig.json"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "nx-actions:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/nx-actions-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/angular",
+    "packageManager": "npm"
+  },
+  "schematics": {
+    "@nrwl/angular": {
+      "application": {
+        "linter": "eslint"
+      },
+      "library": {
+        "linter": "eslint"
+      },
+      "storybook-configuration": {
+        "linter": "eslint"
+      }
+    },
+    "@nrwl/angular:application": {
+      "style": "scss",
+      "linter": "eslint",
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "style": "scss",
+      "linter": "eslint",
+      "unitTestRunner": "jest"
+    },
+    "@nrwl/angular:component": {
+      "style": "scss"
+    }
+  },
+  "defaultProject": "nx-actions"
+}
